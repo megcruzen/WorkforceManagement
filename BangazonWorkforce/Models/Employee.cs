@@ -1,4 +1,4 @@
-// Author: Megan Cruzen
+﻿// Author: Megan Cruzen
 
 using System;
 using System.Collections.Generic;
@@ -14,27 +14,33 @@ namespace BangazonWorkforce.Models
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        
-        public string FullName
-        {
-            get
-            {
+
+        [Display(Name = "Full Name")]
+        public string FullName {
+            get {
                 return $"{FirstName} {LastName}";
             }
         }
 
         [Required]
+        [Display(Name = "Supervisor")]
         public bool IsSupervisor { get; set; }
 
         [Required]
+        [Display(Name = "Department Id")]
         public int DepartmentId { get; set; }
         
         public Department Department { get; set; }
         public Computer Computer { get; set; }
+
+        [Display(Name = "Training")]
+        public List<TrainingProgram> EmployeeTraining { get; set; }
     }
 }

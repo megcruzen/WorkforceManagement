@@ -14,6 +14,7 @@ namespace BangazonWorkforce.Models {
         public DateTime DecommissionDate { get; set; }
 
         [Required]
+        [Display (Name = "Computer")]
         public string Make { get; set; }
 
         [Required]
