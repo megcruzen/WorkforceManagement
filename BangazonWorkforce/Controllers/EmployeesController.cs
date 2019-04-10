@@ -51,7 +51,7 @@ namespace BangazonWorkforce.Controllers {
                             Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            IsSuperVisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
+                            IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
                             DepartmentId = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
                             Department = new Department {
                                 Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
@@ -76,30 +76,73 @@ namespace BangazonWorkforce.Controllers {
 
                 using (SqlCommand cmd = conn.CreateCommand()) {
 
-                    cmd.CommandText = @"SELECT e.Id AS EmployeeId, e.FirstName, e.LastName, e.IsSuperVisor, 
-                                               e.DepartmentId, d.[Name] as DeptName 
-                                         FROM Employee e
-                                    LEFT JOIN Department d ON d.id = e.DepartmentId
-                                        WHERE e.Id = @id";
+                    cmd.CommandText = $@"SELECT e.Id AS EmployeeId, e.FirstName, e.LastName, 
+                                                e.IsSuperVisor, e.DepartmentId, d.[Name] as DeptName, 
+                                                c.Id AS ComputerId, c.Make, c.Manufacturer, 
+                                                ce.AssignDate, ce.UnassignDate, tp.id AS TrainingProgramId, 
+                                                tp.[Name] AS TrainingProgramName, tp.StartDate, tp.EndDate,
+                                                tp.MaxAttendees
+                                           FROM Employee e
+                                      LEFT JOIN EmployeeTraining et ON e.Id = et.EmployeeId
+                                      LEFT JOIN TrainingProgram tp ON tp.Id = et.TrainingProgramId
+                                      LEFT JOIN Department d ON d.id = e.DepartmentId
+                                      LEFT JOIN ComputerEmployee ce ON ce.EmployeeId = e.Id
+                                      LEFT JOIN Computer c ON c.Id = ce.ComputerId
+                                          WHERE e.Id = @id AND UnassignDate IS NULL;";
 
                     cmd.Parameters.Add(new SqlParameter("@id", id));
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     Employee employee = null;
 
-                    if (reader.Read()) {
+                    while (reader.Read()) {
 
-                        employee = new Employee {
-                            Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
-                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            IsSuperVisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
-                            DepartmentId = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
-                            Department = new Department {
-                                Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
-                                Name = reader.GetString(reader.GetOrdinal("DeptName"))
+                        if (employee == null) {
+
+                            employee = new Employee {
+                                Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
+                                DepartmentId = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                Department = new Department {
+                                    Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                    Name = reader.GetString(reader.GetOrdinal("DeptName"))
+                                },
+                                Computer = new Computer(),
+                                EmployeeTraining = new List<TrainingProgram>()
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("ComputerId"))) {
+
+                            if (employee.Computer.Make == null) {
+
+                                employee.Computer = new Computer {
+                                    Id = reader.GetInt32(reader.GetOrdinal("ComputerId")),
+                                    Make = reader.GetString(reader.GetOrdinal("Make")),
+                                    Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer"))
+                                };
+                                
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("TrainingProgramId"))) {
+
+                            int trainingProgramId = reader.GetInt32(reader.GetOrdinal("TrainingProgramId"));
+
+                            if (!employee.EmployeeTraining.Any(tp => tp.Id == trainingProgramId)) {
+
+                                TrainingProgram program = new TrainingProgram {
+                                    Id = reader.GetInt32(reader.GetOrdinal("TrainingProgramId")),
+                                    Name = reader.GetString(reader.GetOrdinal("TrainingProgramName")),
+                                    StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")),
+                                    EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")),
+                                    MaxAttendees = reader.GetInt32(reader.GetOrdinal("MaxAttendees"))
+                                };
+                                employee.EmployeeTraining.Add(program);
                             }
-                        };
+                        }
                     }
                     reader.Close();
                     return View(employee);
@@ -135,14 +178,14 @@ namespace BangazonWorkforce.Controllers {
 
                         cmd.Parameters.Add(new SqlParameter("@firstname", viewModel.Employee.FirstName));
                         cmd.Parameters.Add(new SqlParameter("@lastname", viewModel.Employee.LastName));
-                        cmd.Parameters.Add(new SqlParameter("@supervisor", viewModel.Employee.IsSuperVisor));
+                        cmd.Parameters.Add(new SqlParameter("@supervisor", viewModel.Employee.IsSupervisor));
                         cmd.Parameters.Add(new SqlParameter("@deptId", viewModel.Employee.DepartmentId));
 
                         cmd.ExecuteNonQuery();
                         return RedirectToAction(nameof(Index));
                     }
                 }
-                
+
             } catch {
 
                 return View();
@@ -188,17 +231,6 @@ namespace BangazonWorkforce.Controllers {
     }
 }
 /*
-
-#2  HR should be able to add an employee 
-
-    Acceptance Criteria
-        Given the user is viewing the list of employees
-        When the user clicks the Create New link
-        Then a form for be displayed on which the following information can be entered
-            1. First name
-            2. Last name
-            3. Is the employee a supervisor
-            4. Select a department from a drop down
 
 #3  HR should be able to view employee details
 
