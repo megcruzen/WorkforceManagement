@@ -20,6 +20,14 @@ namespace BangazonWorkforce.Models
         [StringLength(55, MinimumLength = 2)]
         public string LastName { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
+        }
+
         [Required]
         public bool IsSupervisor { get; set; }
 

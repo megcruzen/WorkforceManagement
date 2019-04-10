@@ -105,14 +105,18 @@ namespace BangazonWorkforce.Controllers
 
                     while (reader.Read())
                     {
-                        department = new Department
+                        if (department == null)
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
-                            Name = reader.GetString(reader.GetOrdinal("DepartmentName")),
-                            Budget = reader.GetInt32(reader.GetOrdinal("DepartmentBudget"))
-                        };
+                            department = new Department
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                Name = reader.GetString(reader.GetOrdinal("DepartmentName")),
+                                Budget = reader.GetInt32(reader.GetOrdinal("DepartmentBudget"))
+                            };
+                        }
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
                         {
+                            if (!department.Employees.Exists(x => x.Id == reader.GetInt32(reader.GetOrdinal("EmployeeId"))))
                             department.Employees.Add(
                                 new Employee
                                 {
