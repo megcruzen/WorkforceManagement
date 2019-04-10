@@ -232,18 +232,6 @@ namespace BangazonWorkforce.Controllers {
 }
 /*
 
-#3  HR should be able to view employee details
-
-    Acceptance Criteria
-        Given a user is viewing the employee list
-        When the user clicks on an individual employee
-        Then the user should be shown a detail view of that employee, 
-        and it must contain the following information:
-            1. First name and last name
-            2. Department
-            3. Currently assigned computer
-            4. Training programs they have attended, or plan on attending
-
 #4 HR should be able to edit an employee
 
     Acceptance Criteria
