@@ -10,42 +10,77 @@
     <h4>Employee</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FullName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FullName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IsSuperVisor)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsSuperVisor)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Department.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Department.Name)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Computer.Make)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Computer.Make)
+        </dd>
+        @if (Model.EmployeeTraining.Count > 0) {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EmployeeTraining)
+            </dt>
+            <dd class="col-sm-10">
+                <dl>
+                    @foreach (var program in Model.EmployeeTraining) {
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(prog => program.Name)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(prog => program.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(prog => program.StartDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(prog => program.StartDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(prog => program.EndDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(prog => program.EndDate)
+                        </dd>
+                    }
+                </dl>
+            </dd>
+        }
     </dl>
 </div>
 <div>
