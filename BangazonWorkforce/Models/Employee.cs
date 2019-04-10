@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BangazonAPI.Models
+namespace BangazonWorkforce.Models
 {
     public class Employee
     {
@@ -14,16 +14,27 @@ namespace BangazonAPI.Models
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "Full Name")]
+        public string FullName {
+            get {
+                return $"{FirstName} {LastName}";
+            }
+        }
+
         [Required]
+        [Display(Name = "Supervisor")]
         public bool IsSuperVisor { get; set; }
 
         [Required]
+        [Display(Name = "Department Id")]
         public int DepartmentId { get; set; }
         
         public Department Department { get; set; }

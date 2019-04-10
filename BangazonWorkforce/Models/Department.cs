@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BangazonAPI.Models {
+namespace BangazonWorkforce.Models {
 
     public class Department {
 
@@ -10,9 +10,11 @@ namespace BangazonAPI.Models {
 
         [Required]
         [StringLength(55, MinimumLength = 2)]
+        [Display(Name = "Department Name")]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Department Budget")]
         public int Budget { get; set; }
 
         public List<Employee> Employees { get; set; }
