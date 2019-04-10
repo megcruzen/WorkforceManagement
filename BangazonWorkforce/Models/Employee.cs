@@ -21,7 +21,7 @@ namespace BangazonWorkforce.Models
         public string LastName { get; set; }
 
         [Required]
-        public bool IsSuperVisor { get; set; }
+        public bool IsSupervisor { get; set; }
 
         [Required]
         public int DepartmentId { get; set; }
