@@ -109,12 +109,21 @@ namespace BangazonWorkforce.Controllers {
                                     Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
                                     Name = reader.GetString(reader.GetOrdinal("DeptName"))
                                 },
-                                Computer = new Computer {
+                                Computer = new Computer(),
+                                EmployeeTraining = new List<TrainingProgram>()
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("ComputerId"))) {
+
+                            if (employee.Computer.Make == null) {
+
+                                employee.Computer = new Computer {
                                     Id = reader.GetInt32(reader.GetOrdinal("ComputerId")),
                                     Make = reader.GetString(reader.GetOrdinal("Make")),
                                     Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer"))
-                                },
-                                EmployeeTraining = new List<TrainingProgram>()
+                                };
+                                
                             };
                         }
 
