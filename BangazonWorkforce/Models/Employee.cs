@@ -31,7 +31,7 @@ namespace BangazonWorkforce.Models
 
         [Required]
         [Display(Name = "Supervisor")]
-        public bool IsSuperVisor { get; set; }
+        public bool IsSupervisor { get; set; }
 
         [Required]
         [Display(Name = "Department Id")]
