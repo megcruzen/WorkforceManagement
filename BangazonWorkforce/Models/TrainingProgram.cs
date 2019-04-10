@@ -12,12 +12,15 @@ namespace BangazonWorkforce.Models {
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Start")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [Display(Name = "End")]
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Display(Name = "Max Attendees")]
         public int MaxAttendees { get; set; }
 
         public List<Employee> Attendees { get; set; }
