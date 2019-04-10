@@ -9,6 +9,7 @@ namespace BangazonWorkforce.Models {
         public int Id { get; set;  }
 
         [Required]
+        [Display(Name = "Program Name")]
         public string Name { get; set; }
 
         [Required]

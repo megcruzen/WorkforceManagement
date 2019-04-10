@@ -31,7 +31,7 @@ namespace BangazonWorkforce.Models
 
         [Required]
         [Display(Name = "Supervisor")]
-        public bool IsSuperVisor { get; set; }
+        public bool IsSupervisor { get; set; }
 
         [Required]
         [Display(Name = "Department Id")]
@@ -39,5 +39,8 @@ namespace BangazonWorkforce.Models
         
         public Department Department { get; set; }
         public Computer Computer { get; set; }
+
+        [Display(Name = "Training")]
+        public List<TrainingProgram> EmployeeTraining { get; set; }
     }
 }
