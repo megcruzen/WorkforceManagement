@@ -1,0 +1,45 @@
+﻿@model BangazonWorkforce.Models.TrainingProgram
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Training Program</h1>
+
+<h4 class="mt-4">@Html.DisplayFor(model => model.Name)</h4>
+<table class="table-borderless mb-3">
+    <tbody>
+        <tr>
+            <td><strong>Start</strong></td>
+            <td class="pl-4">@Html.DisplayFor(model => model.StartDate)</td>
+        </tr>
+        <tr>
+            <td><strong>End</strong></td>
+            <td class="pl-4">@Html.DisplayFor(model => model.EndDate)</td>
+        </tr>
+        <tr>
+            <td><strong>Max Attendees</strong></td>
+            <td class="pl-4">@Html.DisplayFor(model => model.MaxAttendees)</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<strong>Attending:</strong>
+@if (Model.Attendees.Count > 0)
+{
+    <ol>
+        @foreach (var item in Model.Attendees)
+        {
+            <li>@Html.DisplayFor(modelItem => item.FullName)</li>
+        }
+    </ol>
+}
+
+
+<div>
+    <br />
+    @Html.ActionLink("Edit", "Edit", new { Model.Id }) | @Html.ActionLink("Delete", "Delete", new { Model.Id })
+    <br /><br />
+    <a asp-action="Index">Back to List</a>
+</div>
