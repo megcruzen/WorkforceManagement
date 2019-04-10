@@ -218,7 +218,18 @@ namespace BangazonWorkforce.Controllers
         // GET: TrainingPrograms/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            TrainingProgram program = GetProgramById(id);
+            if (program == null)
+            {
+                return NotFound();
+            }
+
+            TrainingProgramEditViewModel viewModel = new TrainingProgramEditViewModel
+            {
+                TrainingProgram = program
+            };
+
+            return View(viewModel);
         }
 
         // POST: TrainingPrograms/Delete/5
