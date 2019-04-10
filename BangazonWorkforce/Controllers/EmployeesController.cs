@@ -51,7 +51,7 @@ namespace BangazonWorkforce.Controllers {
                             Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            IsSuperVisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
+                            IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
                             DepartmentId = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
                             Department = new Department {
                                 Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
@@ -93,7 +93,7 @@ namespace BangazonWorkforce.Controllers {
                             Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            IsSuperVisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
+                            IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSuperVisor")),
                             DepartmentId = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
                             Department = new Department {
                                 Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
@@ -135,7 +135,7 @@ namespace BangazonWorkforce.Controllers {
 
                         cmd.Parameters.Add(new SqlParameter("@firstname", viewModel.Employee.FirstName));
                         cmd.Parameters.Add(new SqlParameter("@lastname", viewModel.Employee.LastName));
-                        cmd.Parameters.Add(new SqlParameter("@supervisor", viewModel.Employee.IsSuperVisor));
+                        cmd.Parameters.Add(new SqlParameter("@supervisor", viewModel.Employee.IsSupervisor));
                         cmd.Parameters.Add(new SqlParameter("@deptId", viewModel.Employee.DepartmentId));
 
                         cmd.ExecuteNonQuery();

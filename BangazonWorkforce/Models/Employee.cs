@@ -29,7 +29,7 @@ namespace BangazonWorkforce.Models
         }
 
         [Required]
-        public bool IsSuperVisor { get; set; }
+        public bool IsSupervisor { get; set; }
 
         [Required]
         public int DepartmentId { get; set; }

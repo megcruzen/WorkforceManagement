@@ -71,7 +71,7 @@ namespace BangazonWorkforce.Controllers
                                         Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                                         FirstName = reader.GetString(reader.GetOrdinal("EmployeeFirstName")),
                                         LastName = reader.GetString(reader.GetOrdinal("EmployeeLastName")),
-                                        IsSuperVisor = reader.GetBoolean((reader.GetOrdinal("IsSupervisor")))
+                                        IsSupervisor = reader.GetBoolean((reader.GetOrdinal("IsSupervisor")))
                                     });
                             }
                     }
@@ -119,7 +119,7 @@ namespace BangazonWorkforce.Controllers
                                     Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                                     FirstName = reader.GetString(reader.GetOrdinal("EmployeeFirstName")),
                                     LastName = reader.GetString(reader.GetOrdinal("EmployeeLastName")),
-                                    IsSuperVisor = reader.GetBoolean((reader.GetOrdinal("IsSupervisor")))
+                                    IsSupervisor = reader.GetBoolean((reader.GetOrdinal("IsSupervisor")))
                                 });
                         }
                     }
