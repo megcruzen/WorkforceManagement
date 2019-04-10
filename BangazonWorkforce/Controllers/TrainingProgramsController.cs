@@ -223,29 +223,71 @@ namespace BangazonWorkforce.Controllers
             {
                 return NotFound();
             }
-
-            TrainingProgramEditViewModel viewModel = new TrainingProgramEditViewModel
+            else
             {
-                TrainingProgram = program
-            };
+                return View(program);
+            }
 
-            return View(viewModel);
+            //TrainingProgramEditViewModel viewModel = new TrainingProgramEditViewModel
+            //{
+            //    TrainingProgram = program
+            //};
+
+            //return View(program);
         }
 
         // POST: TrainingPrograms/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, TrainingProgram program)
         {
             try
             {
-                // TODO: Add delete logic here
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"DELETE FROM EmployeeTraining WHERE TrainingProgramId = @id;
+                                            DELETE FROM TrainingProgram WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
-                return RedirectToAction(nameof(Index));
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        throw new Exception("No rows affected");
+                    }
+                }
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                if (!ObjectExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private bool ObjectExists(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id FROM Cohort
+                                        WHERE Id = @id";
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    return reader.Read();
+                }
             }
         }
 

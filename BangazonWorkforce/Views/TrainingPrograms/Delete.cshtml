@@ -1,0 +1,14 @@
+﻿@model BangazonWorkforce.Models.TrainingProgram
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <h1 class="mb-4">Delete Training Program</h1>
+    <h3>Are you sure you want to delete "@Html.DisplayFor(model => model.Name)"?</h3>
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Cancel</a>
+    </form>
+</div>

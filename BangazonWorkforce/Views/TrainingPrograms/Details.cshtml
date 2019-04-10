@@ -37,9 +37,9 @@
 }
 
 
-<div>
-    <br />
-    @Html.ActionLink("Edit", "Edit", new { Model.Id }) | @Html.ActionLink("Delete", "Delete", new { Model.Id })
-    <br /><br />
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <br />
+        @Html.ActionLink("Edit", "Edit", new { Model.Id }) | @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+        <br /><br />
+        <a asp-action="Index">Back to List</a>
+    </div>
