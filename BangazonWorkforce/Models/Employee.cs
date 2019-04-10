@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BangazonAPI.Models
+namespace BangazonWorkforce.Models
 {
     public class Employee
     {
@@ -21,7 +21,7 @@ namespace BangazonAPI.Models
         public string LastName { get; set; }
 
         [Required]
-        public bool IsSuperVisor { get; set; }
+        public bool IsSupervisor { get; set; }
 
         [Required]
         public int DepartmentId { get; set; }
