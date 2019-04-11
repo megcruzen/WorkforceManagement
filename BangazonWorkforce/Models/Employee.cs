@@ -41,6 +41,6 @@ namespace BangazonWorkforce.Models
         public Computer Computer { get; set; }
 
         [Display(Name = "Training")]
-        public List<TrainingProgram> EmployeeTraining { get; set; }
+        public List<TrainingProgram> EmployeeTraining { get; set; } = new List<TrainingProgram>();
     }
 }
