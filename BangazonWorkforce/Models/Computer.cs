@@ -5,6 +5,7 @@ namespace BangazonWorkforce.Models {
 
     public class Computer {
 
+        [Display(Name = "Computer ID")]
         public int Id { get; set;  }
 
         [Required]
