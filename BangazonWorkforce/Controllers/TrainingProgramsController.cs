@@ -1,4 +1,6 @@
-﻿using System;
+﻿// author: Megan Cruzen
+
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -31,7 +33,7 @@ namespace BangazonWorkforce.Controllers
         // GET: TrainingPrograms
         public ActionResult Index()
         {
-            DateTime today = DateTime.UtcNow;
+            DateTime today = DateTime.UtcNow.AddDays(01);
             string filterDate = $"{today.Year}-{today.Month}-{today.Day}";
 
             using (SqlConnection conn = Connection)
@@ -41,7 +43,46 @@ namespace BangazonWorkforce.Controllers
                 {
                     cmd.CommandText = $@"SELECT Id, [Name], StartDate, EndDate, MaxAttendees
                                         FROM TrainingProgram
-                                        WHERE EndDate >= '{filterDate}'";
+                                        WHERE StartDate > '{filterDate}'
+                                        ORDER BY StartDate";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<TrainingProgram> programList = new List<TrainingProgram>();
+                    while (reader.Read())
+                    {
+                        TrainingProgram program = new TrainingProgram
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")),
+                            EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")),
+                            MaxAttendees = reader.GetInt32(reader.GetOrdinal("MaxAttendees"))
+                        };
+
+                        programList.Add(program);
+                    }
+
+                    reader.Close();
+                    return View(programList);
+                }
+            }
+        }
+
+        // GET: TrainingPrograms
+        public ActionResult Past()
+        {
+            DateTime today = DateTime.UtcNow.AddDays(01);
+            string filterDate = $"{today.Year}-{today.Month}-{today.Day}";
+
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = $@"SELECT Id, [Name], StartDate, EndDate, MaxAttendees
+                                        FROM TrainingProgram
+                                        WHERE StartDate < '{filterDate}'
+                                        ORDER BY StartDate";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     List<TrainingProgram> programList = new List<TrainingProgram>();
@@ -223,29 +264,71 @@ namespace BangazonWorkforce.Controllers
             {
                 return NotFound();
             }
-
-            TrainingProgramEditViewModel viewModel = new TrainingProgramEditViewModel
+            else
             {
-                TrainingProgram = program
-            };
+                return View(program);
+            }
 
-            return View(viewModel);
+            //TrainingProgramEditViewModel viewModel = new TrainingProgramEditViewModel
+            //{
+            //    TrainingProgram = program
+            //};
+
+            //return View(program);
         }
 
         // POST: TrainingPrograms/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, TrainingProgram program)
         {
             try
             {
-                // TODO: Add delete logic here
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"DELETE FROM EmployeeTraining WHERE TrainingProgramId = @id;
+                                            DELETE FROM TrainingProgram WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
-                return RedirectToAction(nameof(Index));
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        throw new Exception("No rows affected");
+                    }
+                }
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                if (!ObjectExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private bool ObjectExists(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id FROM Cohort
+                                        WHERE Id = @id";
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    return reader.Read();
+                }
             }
         }
 
