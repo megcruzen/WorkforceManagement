@@ -1,4 +1,6 @@
-﻿using System;
+﻿// author: Megan Cruzen
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
