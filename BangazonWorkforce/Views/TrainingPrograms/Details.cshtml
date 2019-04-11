@@ -1,4 +1,6 @@
-﻿@model BangazonWorkforce.Models.TrainingProgram
+﻿@*author: Megan Cruzen*@
+
+@model BangazonWorkforce.Models.TrainingProgram
 
 @{
     ViewData["Title"] = "Details";
@@ -36,10 +38,20 @@
     </ol>
 }
 
+@{DateTime today = DateTime.UtcNow;}
 
 <div>
     <br />
-    @Html.ActionLink("Edit", "Edit", new { Model.Id }) | @Html.ActionLink("Delete", "Delete", new { Model.Id })
-    <br /><br />
-    <a asp-action="Index">Back to List</a>
+    @if (Model.StartDate >= today)
+    {
+        <div class="mb-2">
+            @Html.ActionLink("Edit", "Edit", new { Model.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+        </div>
+        <a asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        <a asp-action="Past">Back to List</a>
+    }
 </div>
