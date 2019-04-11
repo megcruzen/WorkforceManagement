@@ -19,5 +19,7 @@ namespace BangazonWorkforce.Models {
 
         [Required]
         public string Manufacturer { get; set; }
+
+        public Employee Employee { get; set; }
     }
 }

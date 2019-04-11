@@ -1,4 +1,5 @@
-﻿//Author: Cole Bryant
+﻿//Author: Cole Bryant. Purpose: This is the controller for departments in the database. It allows for users to view the
+// departments and its details (including which employees belong to the department) and add a new department to the database.
 
 using System;
 using System.Collections.Generic;
@@ -105,14 +106,18 @@ namespace BangazonWorkforce.Controllers
 
                     while (reader.Read())
                     {
-                        department = new Department
+                        if (department == null)
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
-                            Name = reader.GetString(reader.GetOrdinal("DepartmentName")),
-                            Budget = reader.GetInt32(reader.GetOrdinal("DepartmentBudget"))
-                        };
+                            department = new Department
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                Name = reader.GetString(reader.GetOrdinal("DepartmentName")),
+                                Budget = reader.GetInt32(reader.GetOrdinal("DepartmentBudget"))
+                            };
+                        }
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
                         {
+                            if (!department.Employees.Exists(x => x.Id == reader.GetInt32(reader.GetOrdinal("EmployeeId"))))
                             department.Employees.Add(
                                 new Employee
                                 {
@@ -151,8 +156,8 @@ namespace BangazonWorkforce.Controllers
                     {
                         cmd.CommandText = @"INSERT INTO Department (Name, Budget)
                                             VALUES (@name, @budget)";
-                        cmd.Parameters.Add(new SqlParameter("@name", viewModel.Name));
-                        cmd.Parameters.Add(new SqlParameter("@budget", viewModel.Budget));
+                        cmd.Parameters.Add(new SqlParameter("@name", viewModel.Department.Name));
+                        cmd.Parameters.Add(new SqlParameter("@budget", viewModel.Department.Budget));
 
                         cmd.ExecuteNonQuery();
                     }
@@ -162,52 +167,6 @@ namespace BangazonWorkforce.Controllers
             catch
             {
                 return View(viewModel);
-            }
-        }
-
-        // GET: Departments/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Departments/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Departments/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Departments/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
     }

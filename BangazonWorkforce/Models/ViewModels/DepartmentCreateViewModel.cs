@@ -8,10 +8,6 @@ namespace BangazonWorkforce.Models.ViewModels
 {
     public class DepartmentCreateViewModel
     {
-        [Display(Name = "Department Name")]
-        public string Name { get; set; }
-
-        [Display(Name = "Department Budget")]
-        public int Budget { get; set; }
+        public Department Department { get; set; }
     }
 }
