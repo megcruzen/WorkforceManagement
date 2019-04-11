@@ -11,7 +11,7 @@ namespace BangazonWorkforce.Models {
         public DateTime PurchaseDate { get; set; }
 
         [Required]
-        public DateTime DecommissionDate { get; set; }
+        public DateTime? DecomissionDate { get; set; }
 
         [Required]
         [Display (Name = "Computer")]
