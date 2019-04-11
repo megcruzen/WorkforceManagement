@@ -3,13 +3,13 @@
 @model IEnumerable<BangazonWorkforce.Models.TrainingProgram>
 
     @{
-        ViewData["Title"] = "Index";
+        ViewData["Title"] = "Past";
     }
 
-    <h1>Upcoming Training Programs</h1>
+    <h1>Past Training Programs</h1>
 
     <p>
-        <a asp-action="Create">Create New Program</a>
+        <a asp-action="Create">Create New Training Program</a>
     </p>
     <table class="table">
         <thead>
@@ -52,4 +52,4 @@
             }
         </tbody>
     </table>
-    <div><a asp-area="" asp-controller="TrainingPrograms" asp-action="Past">View Past Programs</a></div>
+    <div><a asp-area="" asp-controller="TrainingPrograms" asp-action="Index">View Upcoming Programs</a></div>
