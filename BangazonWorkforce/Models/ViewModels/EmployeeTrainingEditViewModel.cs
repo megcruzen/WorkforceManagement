@@ -19,10 +19,10 @@ namespace BangazonWorkforce.Models.ViewModels {
         public List<TrainingProgram> EnrolledTrainingPrograms { get; set; }
         public List<TrainingProgram> NotEnrolledTrainingPrograms { get; set; }
 
-        [Display(Name = "Currently Enrolled Training")]
+        [Display(Name = "Currently Enrolled Training (Highlight Programs to Disenroll)")]
         public List<string> EditedEnrolledTrainingPrograms { get; set; }
 
-        [Display(Name = "Training Not Currently Enrolled")]
+        [Display(Name = "Training Not Currently Enrolled (Highlight Programs to Enroll)")]
         public List<string> EditedNotEnrolledTrainingPrograms { get; set; }
 
         public List<SelectListItem> EnrolledTrainingProgramsOptions {
