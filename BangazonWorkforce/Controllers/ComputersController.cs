@@ -2,6 +2,8 @@
 // to view a list of computers, view details associated with each computer, add a new computer and assign to an
 // employee, and delete a computer from the database.
 
+// Search added by Megan Cruzen
+
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -32,7 +34,7 @@ namespace BangazonWorkforce.Controllers
             }
         }
         // GET: Computers
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             using (SqlConnection conn = Connection)
             {
@@ -51,7 +53,16 @@ namespace BangazonWorkforce.Controllers
 										FROM ComputerEmployee
 										WHERE UnassignDate IS NULL)
 										ce ON c.Id = ce.ComputerId
-                                        LEFT JOIN Employee e ON ce.EmployeeId = e.Id;";
+                                        LEFT JOIN Employee e ON ce.EmployeeId = e.Id
+                                        WHERE 1=1";
+
+                    if (!String.IsNullOrEmpty(searchString))
+                    {
+                        cmd.CommandText += @" AND
+                                             (c.Make LIKE @searchString OR c.Manufacturer LIKE @searchString)";
+                        cmd.Parameters.Add(new SqlParameter("@searchString", $"%{searchString}%"));
+                    }
+
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Computer> computers = new List<Computer>();
 
@@ -65,6 +76,7 @@ namespace BangazonWorkforce.Controllers
                             PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
                             Employee = new Employee()
                         };
+
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
                         {
                             computer.Employee = new Employee
@@ -76,6 +88,7 @@ namespace BangazonWorkforce.Controllers
                         }
                         computers.Add(computer);
                     }
+                    
                     reader.Close();
                     return View(computers);
                 }

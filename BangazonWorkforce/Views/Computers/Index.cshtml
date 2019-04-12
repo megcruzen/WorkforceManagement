@@ -1,14 +1,20 @@
-﻿@model IEnumerable<BangazonWorkforce.Models.Computer>
+﻿@* Search added by Megan Cruzen *@
 
-@{
-    ViewData["Title"] = "Index";
-}
+@model IEnumerable<BangazonWorkforce.Models.Computer>
 
-<h1>Computers</h1>
+    @{
+        ViewData["Title"] = "Index";
+    }
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@using (Html.BeginForm())
+{
+    <p>
+        Search Make/Manufacturer: @Html.TextBox("SearchString") <input type="submit" value="Filter" />
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
