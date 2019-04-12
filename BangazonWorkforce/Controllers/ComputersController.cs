@@ -174,13 +174,16 @@ namespace BangazonWorkforce.Controllers
                     conn2.Open();
                     using (SqlCommand cmd = conn2.CreateCommand())
                     {
-                        cmd.CommandText = @"INSERT INTO ComputerEmployee (EmployeeId, ComputerId, AssignDate)
-                                            VALUES (@employeeId, @computerId, @assignDate)";
-                        cmd.Parameters.Add(new SqlParameter("@employeeId", viewModel.EmployeeId));
-                        cmd.Parameters.Add(new SqlParameter("@computerId", newId));
-                        cmd.Parameters.Add(new SqlParameter("@assignDate", DateTime.Now));
+                        if (viewModel.EmployeeId != null)
+                        {
+                            cmd.CommandText = @"INSERT INTO ComputerEmployee (EmployeeId, ComputerId, AssignDate)
+                                                VALUES (@employeeId, @computerId, @assignDate)";
+                            cmd.Parameters.Add(new SqlParameter("@employeeId", viewModel.EmployeeId));
+                            cmd.Parameters.Add(new SqlParameter("@computerId", newId));
+                            cmd.Parameters.Add(new SqlParameter("@assignDate", DateTime.Now));
 
-                        cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
                     }
                 }
 
@@ -245,9 +248,8 @@ namespace BangazonWorkforce.Controllers
                                         e.FirstName,
                                         e.LastName
                                         FROM Employee e
-                                        LEFT JOIN (SELECT * FROM ComputerEmployee 
-                                        WHERE UnassignDate IS NULL)ce ON e.Id = ce.ComputerId
-                                        WHERE ce.Id IS NULL;";
+                                        LEFT JOIN ComputerEmployee ce ON e.Id = ce.EmployeeId
+										WHERE ce.UnassignDate IS NOT NULL OR ce.Id IS NULL;";
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Employee> employees = new List<Employee>();
 

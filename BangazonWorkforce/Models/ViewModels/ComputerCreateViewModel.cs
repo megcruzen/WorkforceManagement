@@ -11,7 +11,7 @@ namespace BangazonWorkforce.Models.ViewModels
     {
         public Computer Computer { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
 
         public List<Employee> Employees { get; set; } = new List<Employee>();
 
@@ -19,11 +19,18 @@ namespace BangazonWorkforce.Models.ViewModels
         {
             get
             {
-                return Employees.Select(e => new SelectListItem
+                List<SelectListItem> EmployeeList = Employees.Select(e => new SelectListItem
                 {
                     Value = e.Id.ToString(),
                     Text = e.FullName
                 }).ToList();
+                EmployeeList.Insert(0, new SelectListItem{
+                    Value= null,
+                    Text = "No Assignee",
+                    Selected = true
+                });
+                return EmployeeList;
+                
             }
         }
     }
