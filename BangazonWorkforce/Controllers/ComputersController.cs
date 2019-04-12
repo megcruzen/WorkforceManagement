@@ -94,7 +94,7 @@ namespace BangazonWorkforce.Controllers
                                         c.Make,
                                         c.Manufacturer,
                                         c.PurchaseDate,
-                                        c.DecomissionDate,
+                                        c.DecommissionDate,
 										e.Id AS EmployeeId,
 										e.FirstName,
                                         e.LastName
@@ -117,7 +117,7 @@ namespace BangazonWorkforce.Controllers
                             Make = reader.GetString(reader.GetOrdinal("Make")),
                             Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                             PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
-                            DecomissionDate = reader.IsDBNull(reader.GetOrdinal("DecomissionDate")) ? (DateTime?)null : (DateTime?)reader.GetDateTime(reader.GetOrdinal("DecomissionDAte")),
+                            DecommissionDate = reader.IsDBNull(reader.GetOrdinal("DecommissionDate")) ? (DateTime?)null : (DateTime?)reader.GetDateTime(reader.GetOrdinal("DecommissionDate")),
                             Employee = new Employee()
                         };
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
@@ -153,16 +153,32 @@ namespace BangazonWorkforce.Controllers
         {
             try
             {
+                int newId;
                 using (SqlConnection conn = Connection)
                 {
                     conn.Open();
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"INSERT INTO Computer (Make, Manufacturer, PurchaseDate)
+                                            OUTPUT INSERTED.Id
                                             VALUES (@make, @manufacturer, @purchaseDate)";
                         cmd.Parameters.Add(new SqlParameter("@make", viewModel.Computer.Make));
                         cmd.Parameters.Add(new SqlParameter("@manufacturer", viewModel.Computer.Manufacturer));
                         cmd.Parameters.Add(new SqlParameter("@purchaseDate", viewModel.Computer.PurchaseDate));
+
+                        newId = (int)cmd.ExecuteScalar();
+                    }
+                }
+                using (SqlConnection conn2 = Connection)
+                {
+                    conn2.Open();
+                    using (SqlCommand cmd = conn2.CreateCommand())
+                    {
+                        cmd.CommandText = @"INSERT INTO ComputerEmployee (EmployeeId, ComputerId, AssignDate)
+                                            VALUES (@employeeId, @computerId, @assignDate)";
+                        cmd.Parameters.Add(new SqlParameter("@employeeId", viewModel.EmployeeId));
+                        cmd.Parameters.Add(new SqlParameter("@computerId", newId));
+                        cmd.Parameters.Add(new SqlParameter("@assignDate", DateTime.Now));
 
                         cmd.ExecuteNonQuery();
                     }
@@ -200,7 +216,9 @@ namespace BangazonWorkforce.Controllers
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"DELETE FROM Computer
-                                            WHERE Id = @id";
+                                            WHERE Id = @id
+                                            AND NOT EXISTS (SELECT EmployeeId FROM [ComputerEmployee]
+                                            WHERE EmployeeId = @id)";
                         cmd.Parameters.Add(new SqlParameter("@id", id));
 
                         cmd.ExecuteNonQuery();
@@ -225,8 +243,7 @@ namespace BangazonWorkforce.Controllers
                 {
                     cmd.CommandText = @"SELECT e.Id,
                                         e.FirstName,
-                                        e.LastName,
-                                        ce.Id
+                                        e.LastName
                                         FROM Employee e
                                         LEFT JOIN (SELECT * FROM ComputerEmployee 
                                         WHERE UnassignDate IS NULL)ce ON e.Id = ce.ComputerId

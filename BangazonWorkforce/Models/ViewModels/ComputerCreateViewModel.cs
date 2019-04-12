@@ -11,6 +11,8 @@ namespace BangazonWorkforce.Models.ViewModels
     {
         public Computer Computer { get; set; }
 
+        public int EmployeeId { get; set; }
+
         public List<Employee> Employees { get; set; } = new List<Employee>();
 
         public List<SelectListItem> EmployeeOptions
