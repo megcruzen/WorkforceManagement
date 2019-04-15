@@ -1,6 +1,5 @@
-# BangazonAPI
-Welcome to **Bangazon!** The new virtual marketplace. This marketplace allows customers to buy and sell their products through
-a single-page application webpage and its data is tracked through a powerful, hand-crafted and solely dedicated API.
+# BangazonWorkforce
+Welcome to **Bangazon Workforce,** an employee management system. This application enables HR users to keep track of their employees, departments, company computers and employee training programs. Bangazon Workforce is built with C# /.NET MVC and Razor pages for the UI.
 
 ## Table of Contents
 - Software Requirements
