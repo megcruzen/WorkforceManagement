@@ -1,0 +1,68 @@
+﻿@model BangazonWorkforce.Models.ViewModels.EmployeeEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>EmployeeEditViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmployeeDataAndDeptEditViewModel.Employee.FirstName" class="control-label"></label>
+                <input asp-for="EmployeeDataAndDeptEditViewModel.Employee.FirstName" class="form-control" />
+                <span asp-validation-for="EmployeeDataAndDeptEditViewModel.Employee.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeDataAndDeptEditViewModel.Employee.LastName" class="control-label"></label>
+                <input asp-for="EmployeeDataAndDeptEditViewModel.Employee.LastName" class="form-control" />
+                <span asp-validation-for="EmployeeDataAndDeptEditViewModel.Employee.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EmployeeDataAndDeptEditViewModel.Employee.IsSupervisor" />
+                    @Html.DisplayNameFor(model => model.EmployeeDataAndDeptEditViewModel.Employee.IsSupervisor)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeDataAndDeptEditViewModel.Employee.DepartmentId" class="control-label"></label>
+                <select asp-for="EmployeeDataAndDeptEditViewModel.Employee.DepartmentId"
+                        asp-items="@Model.EmployeeDataAndDeptEditViewModel.DepartmentOptions"></select>
+                <span asp-validation-for="EmployeeDataAndDeptEditViewModel.Employee.DepartmentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeComputerEditViewModel.NewComputerId" class="control-label"></label>
+                <select asp-for="EmployeeComputerEditViewModel.NewComputerId"
+                        asp-items="@Model.EmployeeComputerEditViewModel.ComputerOptions"></select>
+                <span asp-validation-for="EmployeeComputerEditViewModel.NewComputerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeTrainingEditViewModel.EditedEnrolledTrainingPrograms" class="control-label"></label>
+                <select asp-for="EmployeeTrainingEditViewModel.EditedEnrolledTrainingPrograms"
+                        asp-items="@Model.EmployeeTrainingEditViewModel.EnrolledTrainingProgramsOptions"></select>
+                <span asp-validation-for="EmployeeTrainingEditViewModel.EditedEnrolledTrainingPrograms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeTrainingEditViewModel.EditedNotEnrolledTrainingPrograms" class="control-label"></label>
+                <select asp-for="EmployeeTrainingEditViewModel.EditedNotEnrolledTrainingPrograms"
+                        asp-items="@Model.EmployeeTrainingEditViewModel.NotEnrolledTrainingProgramsOptions"></select>
+                <span asp-validation-for="EmployeeTrainingEditViewModel.EditedNotEnrolledTrainingPrograms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
