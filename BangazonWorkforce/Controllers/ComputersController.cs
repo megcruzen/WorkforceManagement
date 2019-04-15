@@ -107,6 +107,7 @@ namespace BangazonWorkforce.Controllers
                                         c.Make,
                                         c.Manufacturer,
                                         c.PurchaseDate,
+                                        c.DecommissionDate,
 										e.Id AS EmployeeId,
 										e.FirstName,
                                         e.LastName
@@ -129,6 +130,7 @@ namespace BangazonWorkforce.Controllers
                             Make = reader.GetString(reader.GetOrdinal("Make")),
                             Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                             PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
+                            DecommissionDate = reader.IsDBNull(reader.GetOrdinal("DecommissionDate")) ? (DateTime?)null : (DateTime?)reader.GetDateTime(reader.GetOrdinal("DecommissionDate")),
                             Employee = new Employee()
                         };
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
@@ -164,16 +166,76 @@ namespace BangazonWorkforce.Controllers
         {
             try
             {
+                int newId;
                 using (SqlConnection conn = Connection)
                 {
                     conn.Open();
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"INSERT INTO Computer (Make, Manufacturer, PurchaseDate)
+                                            OUTPUT INSERTED.Id
                                             VALUES (@make, @manufacturer, @purchaseDate)";
                         cmd.Parameters.Add(new SqlParameter("@make", viewModel.Computer.Make));
                         cmd.Parameters.Add(new SqlParameter("@manufacturer", viewModel.Computer.Manufacturer));
                         cmd.Parameters.Add(new SqlParameter("@purchaseDate", viewModel.Computer.PurchaseDate));
+
+                        newId = (int)cmd.ExecuteScalar();
+                    }
+                }
+                using (SqlConnection conn2 = Connection)
+                {
+                    conn2.Open();
+                    using (SqlCommand cmd = conn2.CreateCommand())
+                    {
+                        if (viewModel.EmployeeId != null)
+                        {
+                            cmd.CommandText = @"INSERT INTO ComputerEmployee (EmployeeId, ComputerId, AssignDate)
+                                                VALUES (@employeeId, @computerId, @assignDate)";
+                            cmd.Parameters.Add(new SqlParameter("@employeeId", viewModel.EmployeeId));
+                            cmd.Parameters.Add(new SqlParameter("@computerId", newId));
+                            cmd.Parameters.Add(new SqlParameter("@assignDate", DateTime.Now));
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View(viewModel);
+            }
+        }
+
+        // GET: Computers/Delete/5
+        public ActionResult Delete(int id)
+        {
+            ComputerDeleteViewModel viewModel = new ComputerDeleteViewModel
+            {
+                Computer = GetComputerById(id)
+            };
+
+            return View(viewModel);
+        }
+
+        // POST: Computers/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, ComputerDeleteViewModel viewModel)
+        {
+            try
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"DELETE FROM Computer
+                                            WHERE Id = @id
+                                            AND NOT EXISTS (SELECT EmployeeId FROM [ComputerEmployee]
+                                            WHERE EmployeeId = @id)";
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
                         cmd.ExecuteNonQuery();
                     }
@@ -183,30 +245,7 @@ namespace BangazonWorkforce.Controllers
             }
             catch
             {
-                return View();
-            }
-        }
-
-        // GET: Computers/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Computers/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                return View(viewModel);
             }
         }
 
@@ -218,14 +257,12 @@ namespace BangazonWorkforce.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT e.Id,
-                                        e.FirstName,
-                                        e.LastName,
-                                        ce.Id
-                                        FROM Employee e
-                                        LEFT JOIN (SELECT * FROM ComputerEmployee 
-                                        WHERE UnassignDate IS NULL)ce ON e.Id = ce.ComputerId
-                                        WHERE ce.Id IS NULL;";
+                    cmd.CommandText = @"SELECT id, FirstName, LastName
+                                            FROM Employee
+                                            WHERE id NOT IN (SELECT e.id
+                                            FROM Employee e
+                                            LEFT JOIN ComputerEmployee ce ON e.id = ce.EmployeeId
+                                            WHERE ce.UnassignDate IS NULL AND ce.AssignDate IS NOT NULL)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Employee> employees = new List<Employee>();
 
@@ -245,6 +282,58 @@ namespace BangazonWorkforce.Controllers
                     }
                     reader.Close();
                     return employees;
+                }
+            }
+        }
+
+        // Get a computer by its ID
+        private Computer GetComputerById(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT c.Id,
+                                        c.Make,
+                                        c.Manufacturer,
+                                        c.PurchaseDate,
+										e.Id AS EmployeeId,
+										e.FirstName,
+                                        e.LastName
+                                        FROM Computer c
+                                        LEFT JOIN (SELECT * 
+										FROM ComputerEmployee
+										WHERE UnassignDate IS NULL)
+										ce ON c.Id = ce.ComputerId
+                                        LEFT JOIN Employee e ON ce.EmployeeId = e.Id
+                                        WHERE c.Id = @id;";
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    Computer computer = null;
+
+                    while (reader.Read())
+                    {
+                        computer = new Computer
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Make = reader.GetString(reader.GetOrdinal("Make")),
+                            Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+                            PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
+                            Employee = new Employee()
+                        };
+                        if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
+                        {
+                            computer.Employee = new Employee
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName"))
+                            };
+                        };
+                    }
+                    reader.Close();
+                    return computer;
                 }
             }
         }
