@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BangazonWorkforce.Models;
 using Microsoft.Extensions.Configuration;
 using BangazonWorkforce.Models.ViewModels;
 using System;
 
-namespace BangazonWorkforce.Controllers {
+namespace BangazonWorkforce.Controllers
+{
 
     public class EmployeesController : Controller {
 
@@ -248,7 +248,7 @@ namespace BangazonWorkforce.Controllers {
 
                     UpdateEmployeeTrainingPrograms(id, viewModel);
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Edit));
                 }
             }
         }
@@ -329,7 +329,6 @@ namespace BangazonWorkforce.Controllers {
                 }
             }
         }
-
 
         private List<Computer> GetUnassignedComputers(int id) {
 
@@ -429,7 +428,7 @@ namespace BangazonWorkforce.Controllers {
                     cmd.CommandText = $@"SELECT DISTINCT tp.Id AS ProgramId, tp.[Name] AS ProgramName
                                                     FROM TrainingProgram tp
                                                LEFT JOIN EmployeeTraining et ON tp.Id = et.TrainingProgramId
-                                                   WHERE tp.[Name] NOT IN (SELECT DISTINCT tp.Name 
+                                                   WHERE StartDate >= '{filterDate}' AND tp.[Name] NOT IN (SELECT DISTINCT tp.Name 
 							                                  FROM EmployeeTraining et
 							                             LEFT JOIN TrainingProgram tp ON tp.Id = et.TrainingProgramId
 							                                 WHERE et.EmployeeId = {id} AND StartDate >= '{filterDate}')";
@@ -559,15 +558,3 @@ namespace BangazonWorkforce.Controllers {
         }
     }
 }
-/*
-
-#4 HR should be able to edit an employee
-
-    Acceptance Criteria
-        Given user is viewing an employee
-        When user clicks on the Edit link
-        Then user should be able to edit the last name of the employee
-        Or change the department to which the employee is assigned
-        Or change the computer assigned to the employee
-        Or add/remove training programs for the employee to attend in the future
-*/
