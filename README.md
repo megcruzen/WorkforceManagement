@@ -9,7 +9,7 @@ a single-page application webpage and its data is tracked through a powerful, ha
 - UI Walkthrough
 
 ## Software Requirements
-- Sql Server Manangment Studio
+- Sql Server Manangement Studio
 - Visual Studio Community 2017
 - Google Chrome
 
@@ -47,14 +47,16 @@ Click on the word details on and individual department to see a list of that dep
 ## Employees 
 
 ### Employee Index/List View
-To see the Employee Index view, click on the Employee tab in the navbar in the upper portion of the screen (while the app is running). If all is working correctly, you should see a nicely formatted table that has a column for First Name Last Name and Department Name. Each of these columns should be filled with the corresponding information that is sourced from the database. On the right of each row, for each Employee, you should see a hyperlink for ```Detail``` and ```Edit```. Above the First Name column, there should be a hyperlink for ```Create New```. 
+To see the Employee Index view, click on the Employee tab in the navbar in the upper portion of the screen (while the app is running). If all is working correctly, you should see a nicely formatted table that has a column for First Name Last Name and Department Name, as well as a checkbox indicating whether or not the employee is a supervisor. Each of these columns should be filled with the corresponding information that is sourced from the database. On the right of each row, for each Employee, you should see a hyperlink for ```Detail``` and ```Edit```. Above the First Name column, there should be a hyperlink for ```Create New```. 
 
 ### Details
-When the employee list is being viewed, the user will be able to click on the ```Details``` link that will bring them to a "details" view of the specific employee that was associated with the ```Details``` link. The user should see the an employee's first name, last name, department name, and a list of training programs they are enrolled in with the details of the program listed as well. The user should see an ```Edit``` button at the bottom as well as a ```back to list``` button. 
+When the employee list is being viewed, the user will be able to click on the ```Details``` link that will bring them to a "details" view of the specific employee that was associated with the ```Details``` link. The user should see the employee's first name, last name, full name, department name, and a list of training programs they are enrolled in with the details of the program listed as well. The user should see an ```Edit``` button at the bottom as well as a ```back to list``` button. 
+
+### Edit An Employee
+When the "Edit" link next to an employee (or on the bottom of the "Details" page) is clicked, it will direct the user to a form for editing employee details. The link will show a form with input fields where the user can change the basic information (first name, last name, supervisor status, department).  The user is also able to change the employee's assigned computer and training programs the employee is signed up for, both enrolling and unrolling the employee from training.  At the bottom the form contains a submit button. Once submitted the form will be refreshed with the newly changed data.  When the user is done editing an employee, they can click the "Back to List" link at the bottom of the page or the "Employees" link in the navbar to return to the list of all employees. 
 
 ### Create A New Employee
-Human Resources can add a new employee by clicking "Create New" link on the View all Employees view. The link will show a form with an input field requesting the new employee's first name, last name, email, supervisor status, department, and a submit button. Once submitted they will be rerouted back to view all Employee page and the new employee is also listed.
-
+Human Resources can add a new employee by clicking "Create New" link on the View all Employees view. The link will show a form with an input field requesting the new employee's first name, last name, supervisor status, department, and a submit button. Once submitted they will be rerouted back to view all Employee page and the new employee is also listed.
 ## Computers
 
 ### Computer Index/List View
