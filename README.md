@@ -25,13 +25,13 @@ then replace ```INSERT_DATABASE_NAME``` with the name of your database that you'
 ## Starting this Project
 
 Clone the Ice Phantoms WorkforceManagement repo onto your machine. ```cd``` into that directory and open the project in Visual Studio Code.
-Make sure the database is built on your local machine using the contents of ```BangazonDatabaseSeedBuild``` in the project root directory (see database setup above for instructions).
+Make sure the database is built on your local machine using the contents of ```Tables``` in the project root directory (see database setup above for instructions).
 Link Visual Studio Code to that database by going to ```View``` and selecting the ```SQL Server Object Explorer```. Open that up and press the ```add SQL server``` button (looks like a column with a green plus). Then select ```local``` and pick the option that matches your local server.
 
 If all went correctly, your database should be connected, and you can then run the project.
-To run the project, press the green "play" triangle that is above the code editor, roughly in the middle.
+To run the project, press the green "play" triangle (after selecting BangazonWorkforce) that is above the code editor, roughly in the middle.
 
-# Human Resources
+# Human Resources Walkthrough
 
 ## Departments
 
@@ -44,7 +44,7 @@ Human Resources can add a new department by clicking Create New link on the View
 ### Details/View one Department
 Click on the word details on and individual department to see a list of that department's employees.
 
-## Employee 
+## Employees 
 
 ### Employee Index/List View
 To see the Employee Index view, click on the Employee tab in the navbar in the upper portion of the screen (while the app is running). If all is working correctly, you should see a nicely formatted table that has a column for First Name Last Name and Department Name. Each of these columns should be filled with the corresponding information that is sourced from the database. On the right of each row, for each Employee, you should see a hyperlink for ```Detail``` and ```Edit```. Above the First Name column, there should be a hyperlink for ```Create New```. 
@@ -55,7 +55,7 @@ When the employee list is being viewed, the user will be able to click on the ``
 ### Create A New Employee
 Human Resources can add a new employee by clicking "Create New" link on the View all Employees view. The link will show a form with an input field requesting the new employee's first name, last name, email, supervisor status, department, and a submit button. Once submitted they will be rerouted back to view all Employee page and the new employee is also listed.
 
-## Computer
+## Computers
 
 ### Computer Index/List View
 To see the Computer Index view, click on the Computer tab in the navbar in the upper portion of the screen (while the app is running). If all is working correctly, you should see a nicely formatted table that has a column for Make, Model and Employee Assigned. Each of these columns should be filled with the corresponding information that is sourced from the database. On the right of each row, for each Computer, you should see a hyperlink for ```Detail``` and ```Delete```.  
