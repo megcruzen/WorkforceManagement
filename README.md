@@ -1,5 +1,5 @@
 # BangazonWorkforce
-Welcome to **Bangazon Workforce,** the employee management system. This application enables HR users to keep track of their employees, departments, company computers and employee training programs. Bangazon Workforce is built with C# /.NET MVC and Razor pages for the UI.
+Welcome to **Bangazon Workforce,** the employee management system. This application enables HR users to keep track of their employees, departments, computers and employee training programs. Bangazon Workforce is built with C# /.NET MVC and Razor pages for the UI.
 
 ## Table of Contents
 - Software Requirements
