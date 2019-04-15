@@ -6,7 +6,7 @@ a single-page application webpage and its data is tracked through a powerful, ha
 - Software Requirements
 - Entity Relationship Diagram
 - Database Setup
-- UI walkthrough
+- UI Walkthrough
 
 ## Software Requirements
 - Sql Server Manangment Studio
