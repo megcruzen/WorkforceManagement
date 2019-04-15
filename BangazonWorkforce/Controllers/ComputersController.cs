@@ -257,12 +257,12 @@ namespace BangazonWorkforce.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT e.Id,
-                                        e.FirstName,
-                                        e.LastName
-                                        FROM Employee e
-                                        LEFT JOIN ComputerEmployee ce ON e.Id = ce.EmployeeId
-										WHERE ce.UnassignDate IS NOT NULL OR ce.Id IS NULL;";
+                    cmd.CommandText = @"SELECT id, FirstName, LastName
+                                            FROM Employee
+                                            WHERE id NOT IN (SELECT e.id
+                                            FROM Employee e
+                                            LEFT JOIN ComputerEmployee ce ON e.id = ce.EmployeeId
+                                            WHERE ce.UnassignDate IS NULL AND ce.AssignDate IS NOT NULL)";
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Employee> employees = new List<Employee>();
 
