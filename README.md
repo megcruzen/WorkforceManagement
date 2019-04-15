@@ -39,10 +39,10 @@ To run the project, press the green "play" triangle (after selecting BangazonWor
 The great folks in the Human Resources Department can view all Departments when the Department Naviagation Link is clicked. The Department view shows links for "Create new Department" under the page title and "details" link to the right of each department.
 
 ### Add A New Department
-Human Resources can add a new department by clicking Create New link on the View all Departments view. The link will show a form with an input field requesting the new department name and a submit button. Once submitted they will be rerouted back to view all department page and the new department is also listed.
+Human Resources can add a new department by clicking Create New link on the View all Departments view. The link will show a form with an input field requesting the new department name, budget and a submit button. Once submitted they will be rerouted back to view all department page and the new department is also listed.
 
 ### Details/View one Department
-Click on the word details on and individual department to see a list of that department's employees.
+Click on the details link on an individual department to see a list of that department's employees.
 
 ## Employees 
 
@@ -57,16 +57,17 @@ When the "Edit" link next to an employee (or on the bottom of the "Details" page
 
 ### Create A New Employee
 Human Resources can add a new employee by clicking "Create New" link on the View all Employees view. The link will show a form with an input field requesting the new employee's first name, last name, supervisor status, department, and a submit button. Once submitted they will be rerouted back to view all Employee page and the new employee is also listed.
+
 ## Computers
 
 ### Computer Index/List View
-To see the Computer Index view, click on the Computer tab in the navbar in the upper portion of the screen (while the app is running). If all is working correctly, you should see a nicely formatted table that has a column for Make, Model and Employee Assigned. Each of these columns should be filled with the corresponding information that is sourced from the database. On the right of each row, for each Computer, you should see a hyperlink for ```Detail``` and ```Delete```.  
+To see the Computer Index view, click on the Computer tab in the navbar. You will see a table that has a column for Make, Model and Employee Assigned. Each of these columns will be filled with the corresponding information that is sourced from the database. On the right of each row, for each Computer, you should see a hyperlink for ```Detail```.  
 
 ### Create
-From the Computers List, click the Create New link to show a form with corresponding computer input fields.  Once the fields have been filled use the submit button to create a new computer.  If successful you will be returned to the Computers list.
+From the Computers List, click the Create New link to show a form with corresponding computer input fields.  Once the fields have been filled, use the submit button to create a new computer (and assign it to an employee if desired).  Once submitted you will be returned to the Computers list.
 
 ### Details/View One Computer
-Click on the link "Details" one an indiviual computer in the Index view. The browser will show the details of the selected computer. The details will include the date of purchase of the computer, date the computer was decommissioned if applicable, model and manufacturer.
+Click on the Make of an indiviual computer in the Index view. The browser will show the details of the selected computer. The details will include the date of purchase of the computer, date the computer was decommissioned if applicable, the employee assigned to the computer and the model and manufacturer.
 
 ### Delete Computer
 On the details view for all Computers page, click on the the delete link. The user will be shown a view with the computer details and will ask for confirmation of the delete. Once the user clicks on delete the computer is deleted and the user is taken back to the index view or if the computer is currently assigned or has been previously assign the delete is denied.
