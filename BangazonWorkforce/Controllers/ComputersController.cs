@@ -233,8 +233,8 @@ namespace BangazonWorkforce.Controllers
                     {
                         cmd.CommandText = @"DELETE FROM Computer
                                             WHERE Id = @id
-                                            AND NOT EXISTS (SELECT EmployeeId FROM [ComputerEmployee]
-                                            WHERE EmployeeId = @id)";
+                                            AND NOT EXISTS (SELECT * FROM [ComputerEmployee]
+                                            WHERE ComputerId = @id)";
                         cmd.Parameters.Add(new SqlParameter("@id", id));
 
                         cmd.ExecuteNonQuery();
