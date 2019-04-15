@@ -6,17 +6,7 @@ a single-page application webpage and its data is tracked through a powerful, ha
 - Software Requirements
 - Entity Relationship Diagram
 - Database Setup
-- Http Request Methods:
-1. Customers
-1. Products
-1. Payment Types
-1. Orders
-1. Product Types
-1. Employees
-1. Departments
-1. Computers
-1. Training Programs
-
+- UI walkthrough
 
 ## Software Requirements
 - Sql Server Manangment Studio
